@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cp \"CLAUDE_CODE_PROMPT.md\" \"PROMPT.md\" && ls -la)",
+      "Bash(npm -v)",
+      "PowerShell(node -v)",
+      "PowerShell(npm -v)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\USER\\Desktop\\과제\\신인류AI\\기말과제"
+    ]
+  }
+}

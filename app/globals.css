@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #f6f9fe;
+  --surface: #ffffff;
+  --text: #1f2a44;
+  --text-muted: #8a93a6;
+  --grad-start: #8bcc6e;
+  --grad-mid: #6cb454;
+  --grad-end: #3f6b32;
+  --radius-card: 20px;
+  --shadow-card: 0 4px 16px rgba(31, 42, 68, 0.06);
+  --shadow-card-hover: 0 10px 24px rgba(31, 42, 68, 0.12);
+  --tone-green-bg: #e9f6e1;
+  --tone-green-fg: #5a9c3f;
+  --tone-amber-bg: #fbf1e4;
+  --tone-amber-fg: #b8832e;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-grad-start: var(--grad-start);
+  --color-grad-mid: var(--grad-mid);
+  --color-grad-end: var(--grad-end);
+  --color-tone-green-bg: var(--tone-green-bg);
+  --color-tone-green-fg: var(--tone-green-fg);
+  --color-tone-amber-bg: var(--tone-amber-bg);
+  --color-tone-amber-fg: var(--tone-amber-fg);
+  --radius-card: var(--radius-card);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.gradient-brand {
+  background: linear-gradient(90deg, var(--grad-start), var(--grad-mid), var(--grad-end));
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, var(--grad-start), var(--grad-mid), var(--grad-end));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}

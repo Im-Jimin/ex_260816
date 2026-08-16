@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell($env:PATH = [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"Machine\"\\) + \";\" + [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"User\"\\); node -v; npm -v)",
+      "Read(//c/Program Files/nodejs/**)",
+      "PowerShell([System.Environment]::GetEnvironmentVariable\\(\"Path\",\"Machine\"\\) -split ';' | Select-String -Pattern 'nodejs')",
+      "PowerShell($env:PATH += \";C:\\\\Program Files\\\\nodejs\"; node -v; npm -v)",
+      "PowerShell($env:PATH += \";C:\\\\Program Files\\\\nodejs\"; Set-Location \"c:\\\\Users\\\\USER\\\\Desktop\\\\과제\\\\신인류AI\\\\기말과제\"; npm install next@15 eslint-config-next@15 2>&1 | Select-Object -Last 40)",
+      "PowerShell($env:PATH += \";C:\\\\Program Files\\\\nodejs\"; Set-Location \"c:\\\\Users\\\\USER\\\\Desktop\\\\과제\\\\신인류AI\\\\기말과제\"; npm audit 2>&1 | Select-Object -Last 40)"
+    ]
+  }
+}
