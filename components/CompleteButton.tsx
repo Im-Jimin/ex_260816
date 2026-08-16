@@ -4,15 +4,43 @@ import { useState } from "react";
 import Link from "next/link";
 import { PartyPopper } from "lucide-react";
 import { addCompletion } from "@/lib/storage";
+import { getOrCreateSessionId } from "@/lib/client-session";
 
 export default function CompleteButton({
+  itemId,
+  itemName,
+  categoryId,
+  region,
   point,
   carbonSavingG,
 }: {
+  itemId: string;
+  itemName: string;
+  categoryId?: string;
+  region: string;
   point: number;
   carbonSavingG: number;
 }) {
   const [done, setDone] = useState(false);
+
+  function handleComplete() {
+    addCompletion(point, carbonSavingG);
+    setDone(true);
+
+    fetch("/api/log-completion", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        sessionId: getOrCreateSessionId(),
+        itemId,
+        itemName,
+        categoryId,
+        region: region || null,
+        points: point,
+        carbonSavingG,
+      }),
+    }).catch(() => {});
+  }
 
   if (done) {
     return (
@@ -31,10 +59,7 @@ export default function CompleteButton({
   return (
     <button
       type="button"
-      onClick={() => {
-        addCompletion(point, carbonSavingG);
-        setDone(true);
-      }}
+      onClick={handleComplete}
       className="gradient-brand w-full rounded-full py-4 text-base font-bold text-white shadow-[var(--shadow-card)] transition-transform duration-150 hover:scale-[1.01]"
     >
       배출 완료

@@ -1,12 +1,18 @@
 "use client";
 
-import { useState } from "react";
 import { MapPin } from "lucide-react";
 import { regions } from "@/lib/regions";
 import type { RegionNotes } from "@/lib/data";
 
-export default function RegionSelect({ regionNotes }: { regionNotes?: RegionNotes }) {
-  const [region, setRegion] = useState("");
+export default function RegionSelect({
+  regionNotes,
+  region,
+  onRegionChange,
+}: {
+  regionNotes?: RegionNotes;
+  region: string;
+  onRegionChange: (region: string) => void;
+}) {
   const hasSelected = region !== "";
   const note = hasSelected ? regionNotes?.[region] : undefined;
 
@@ -19,7 +25,7 @@ export default function RegionSelect({ regionNotes }: { regionNotes?: RegionNote
       <select
         id="region-select"
         value={region}
-        onChange={(e) => setRegion(e.target.value)}
+        onChange={(e) => onRegionChange(e.target.value)}
         className="w-full max-w-xs rounded-xl bg-surface px-4 py-3 text-sm text-text shadow-[var(--shadow-card)] focus:outline-none"
       >
         <option value="">지역을 선택하세요</option>

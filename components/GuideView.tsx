@@ -20,6 +20,7 @@ export default function GuideView({
   const router = useRouter();
   const [answered, setAnswered] = useState(!item.ambiguity);
   const [checklistDone, setChecklistDone] = useState(false);
+  const [region, setRegion] = useState("");
 
   function handleAmbiguitySelect(resultItemId: string) {
     if (resultItemId === item.id) {
@@ -33,7 +34,7 @@ export default function GuideView({
     <div className="flex flex-col gap-8">
       <ResultBadge itemName={item.name} category={category} />
 
-      <RegionSelect regionNotes={item.regionNotes} />
+      <RegionSelect regionNotes={item.regionNotes} region={region} onRegionChange={setRegion} />
 
       {item.ambiguity && !answered ? (
         <AmbiguityCard ambiguity={item.ambiguity} onSelect={handleAmbiguitySelect} />
@@ -43,7 +44,16 @@ export default function GuideView({
 
       <ChecklistCard steps={item.steps} locked={!answered} onComplete={() => setChecklistDone(true)} />
 
-      {checklistDone && <CompleteButton point={item.point} carbonSavingG={item.carbonSavingG} />}
+      {checklistDone && (
+        <CompleteButton
+          itemId={item.id}
+          itemName={item.name}
+          categoryId={item.categoryId}
+          region={region}
+          point={item.point}
+          carbonSavingG={item.carbonSavingG}
+        />
+      )}
     </div>
   );
 }
