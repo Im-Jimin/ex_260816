@@ -24,7 +24,7 @@ export default function CompleteButton({
   const [done, setDone] = useState(false);
 
   function handleComplete() {
-    addCompletion(point, carbonSavingG);
+    addCompletion(point, carbonSavingG, itemName, categoryId);
     setDone(true);
 
     fetch("/api/log-completion", {

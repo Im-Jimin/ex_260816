@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import Script from "next/script";
+import { User } from "lucide-react";
 import "./globals.css";
 import Footer from "@/components/Footer";
 import SessionInit from "@/components/SessionInit";
@@ -72,6 +74,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           `}
         </Script>
         <SessionInit />
+        <Link
+          href="/mypage"
+          aria-label="마이페이지"
+          className="fixed right-4 top-4 z-40 flex h-10 w-10 items-center justify-center rounded-full bg-surface text-text-muted shadow-[var(--shadow-card)] transition-colors hover:text-tone-green-fg sm:right-6 sm:top-6"
+        >
+          <User className="h-5 w-5" strokeWidth={2} />
+        </Link>
         {children}
         <Footer />
       </body>
