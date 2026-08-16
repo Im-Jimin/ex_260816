@@ -24,7 +24,7 @@ export async function askAIFromImage(base64Data: string, mediaType: string): Pro
   try {
     const client = new Anthropic({ apiKey });
     const response = await client.messages.create({
-      model: "claude-haiku-4-5",
+      model: "claude-sonnet-5",
       max_tokens: 2048,
       output_config: {
         format: { type: "json_schema", schema: RESPONSE_SCHEMA },

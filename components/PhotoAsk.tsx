@@ -7,7 +7,39 @@ import { getCategoryById, type Item } from "@/lib/data";
 
 type Status = "idle" | "loading" | "result" | "error";
 
-const MAX_FILE_BYTES = 5 * 1024 * 1024;
+const MAX_FILE_BYTES = 20 * 1024 * 1024;
+const MAX_DIMENSION = 1568;
+const JPEG_QUALITY = 0.85;
+
+async function resizeImage(file: File): Promise<{ base64: string; mediaType: string }> {
+  const dataUrl = await new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = () => reject(new Error("file read failed"));
+    reader.readAsDataURL(file);
+  });
+
+  const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => resolve(image);
+    image.onerror = () => reject(new Error("image decode failed"));
+    image.src = dataUrl;
+  });
+
+  const scale = Math.min(1, MAX_DIMENSION / Math.max(img.width, img.height));
+  const width = Math.round(img.width * scale);
+  const height = Math.round(img.height * scale);
+
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("canvas context unavailable");
+  ctx.drawImage(img, 0, 0, width, height);
+
+  const resizedDataUrl = canvas.toDataURL("image/jpeg", JPEG_QUALITY);
+  return { base64: resizedDataUrl.slice(resizedDataUrl.indexOf(",") + 1), mediaType: "image/jpeg" };
+}
 
 export default function PhotoAsk() {
   const cameraInputRef = useRef<HTMLInputElement>(null);
@@ -30,19 +62,12 @@ export default function PhotoAsk() {
     setItem(null);
 
     try {
-      const dataUrl = await new Promise<string>((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result as string);
-        reader.onerror = () => reject(new Error("file read failed"));
-        reader.readAsDataURL(file);
-      });
-
-      const base64 = dataUrl.slice(dataUrl.indexOf(",") + 1);
+      const { base64, mediaType } = await resizeImage(file);
 
       const res = await fetch("/api/ask-image", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ data: base64, mediaType: file.type }),
+        body: JSON.stringify({ data: base64, mediaType }),
       });
       const json = await res.json();
 

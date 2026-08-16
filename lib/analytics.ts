@@ -35,6 +35,30 @@ export async function logItemView(
   }
 }
 
+export async function logPhotoAsk(
+  sessionId: string,
+  recognized: boolean,
+  itemId: string | null,
+  itemName: string | null,
+  categoryId: string | undefined,
+  storagePath: string | null
+) {
+  const supabase = getSupabase();
+  if (!supabase) return;
+  try {
+    await supabase.from("photo_asks").insert({
+      session_id: sessionId,
+      recognized,
+      item_id: itemId,
+      item_name: itemName,
+      category_id: categoryId ?? null,
+      storage_path: storagePath,
+    });
+  } catch {
+    // 로깅 실패가 사용자 경험을 막으면 안 되므로 조용히 무시
+  }
+}
+
 export async function logCompletion(
   sessionId: string,
   itemId: string,
